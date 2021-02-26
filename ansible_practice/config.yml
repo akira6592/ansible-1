@@ -1,0 +1,19 @@
+---
+- hosts: vyos
+  gather_facts: false
+  tasks:
+    - name: show version
+      vyos_config:
+        lines:
+          - set interfaces ethernet eth0 description test!
+        save: yes
+    
+    - name: show interface
+      vyos_command:
+        commands:
+          - show interfaces 
+      register: result_show_interfaces 
+    
+    - name: debug result_show_interfaces
+      debug:
+        msg: "{{ result_show_interfaces.stdout_lines[0] }}"
